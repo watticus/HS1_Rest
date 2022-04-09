@@ -1,5 +1,6 @@
 var express = require('express');
 const { convertCsv } = require('../lib/convertCsv');
+const { convertBodyToStringBlock } = require('../lib/parseBody');
 var router = express.Router();
 
 /* GET home page. */
@@ -21,16 +22,15 @@ const parseRawBody = (req, res, next) => {
 
 router.use(parseRawBody);
 
-router.post('/test', (req, res) => {
-    console.log(req.rawBody)
-    res.send(convertCsv(req.rawBody));
+router.post('/parseCsvBody', (req, res) => {
+    (async () => {
+      let returnBlock = await convertBodyToStringBlock(req.rawBody);
+      res.send(returnBlock);
+    })();    
 });
 
-router.post('/csvParseBody', function(req, res, next) {
-    const body = req.body
-    console.log(body)
-    // console.log(replaceQuotesWithBrackets(splitCsv(csv)))
-    res.send(convertCsv(csv));
+router.get('/healthcheck', function(req, res, next) {
+    res.status(200).send("Healthy");
 });
 
 module.exports = router;
