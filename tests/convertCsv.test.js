@@ -29,7 +29,7 @@ describe('CSV Conversion Tests', () => {
     });
 
     test('Empty input validation', () => {
-        testString1 = '"","513-95-7520",35,"801.867.5309","Opratory=11,PCP=-1"';
+        testString1 = '"","513-95-7520",81,"801.867.5309","Opratory=11,PCP=-1"';
         testString2 = '"Tutone, Tommy",,81,"801.867.5309","Opratory=11,PCP=-1"';
         testString3 = '"Tutone, Tommy","513-95-7520",,"801.867.5309","Opratory=11,PCP=-1"';
         testString4 = '"Tutone, Tommy","513-95-7520",81,"","Opratory=11,PCP=-1"';
@@ -37,7 +37,7 @@ describe('CSV Conversion Tests', () => {
         testString6 = '"","","","",""'
         testString7 = ',,,,'
 
-        expect(convertCsv.convertCsv(testString1)).toBe('[] [513-95-7520] [35] [801.867.5309] [Opratory=11,PCP=-1]');
+        expect(convertCsv.convertCsv(testString1)).toBe('[] [513-95-7520] [81] [801.867.5309] [Opratory=11,PCP=-1]');
         expect(convertCsv.convertCsv(testString2)).toBe('[Tutone, Tommy] [] [81] [801.867.5309] [Opratory=11,PCP=-1]');
         expect(convertCsv.convertCsv(testString3)).toBe('[Tutone, Tommy] [513-95-7520] [] [801.867.5309] [Opratory=11,PCP=-1]');
         expect(convertCsv.convertCsv(testString4)).toBe('[Tutone, Tommy] [513-95-7520] [81] [] [Opratory=11,PCP=-1]');
@@ -45,5 +45,18 @@ describe('CSV Conversion Tests', () => {
         expect(convertCsv.convertCsv(testString6)).toBe('[] [] [] [] []');
         expect(convertCsv.convertCsv(testString7)).toBe('[] [] [] [] []');
 
+    });
+
+    test('Non Standard input validation', () => {
+        testString1 = '"*^#%) Name","SSN","Age","Phone Number","Status"';
+        testString2 = '"Prescott, Zeke Obadiah","542-51-6641",21,"801-555-2134","Opratory=2,PCP=1"';
+        testString3 = '"Goldstein, Bucky","xxx-xx-xxxx",42,"435-555-1541","Opratory=1,PCP=1"';
+        testString4 = '"Vox, Bono","414-45-1475",51,"801.555.2100","Opratory=3,PCP=2"';
+        
+
+        expect(convertCsv.convertCsv(testString1)).toBe('[*^#%) Name] [SSN] [Age] [Phone Number] [Status]');
+        expect(convertCsv.convertCsv(testString2)).toBe('[Prescott, Zeke Obadiah] [542-51-6641] [21] [801-555-2134] [Opratory=2,PCP=1]');
+        expect(convertCsv.convertCsv(testString3)).toBe('[Goldstein, Bucky] [xxx-xx-xxxx] [42] [435-555-1541] [Opratory=1,PCP=1]');
+        expect(convertCsv.convertCsv(testString4)).toBe('[Vox, Bono] [414-45-1475] [51] [801.555.2100] [Opratory=3,PCP=2]');
     });
 });

@@ -7,10 +7,13 @@ router.get('/healthcheck', function(req, res, next) {
   res.status(200).send("Healthy");
 });
 
-/* GET home page. */
 router.get('/csvParameter', function(req, res, next) {
+    if (typeof(req.query.csv) != String ) {
+      res.status(400).send("Invalid data type, please provide string in query paramters");
+    } else {
     const csv = req.query.csv
     res.status(200).send(convertCsv(csv));
+    }
 });
 
 const parseRawBody = (req, res, next) => {
@@ -27,10 +30,15 @@ const parseRawBody = (req, res, next) => {
 router.use(parseRawBody);
 
 router.post('/parseCsvBody', (req, res) => {
+  console.log(typeof(req.rawBody))
+  if (typeof(req.rawBody) != 'string') {
+    res.status(400).send("Invalid data type, body must be provided in text format");
+  } else {
     (async () => {
       let returnBlock = await convertBodyToStringBlock(req.rawBody);
       res.send(returnBlock);
-    })();    
+    })();
+  }   
 });
 
 module.exports = router;
