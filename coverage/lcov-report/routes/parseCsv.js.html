@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>36/36</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>36/36</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
@@ -94,11 +94,7 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -108,30 +104,26 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">let express = require('express');
 const { convertCsv } = require('../lib/convertCsv');
@@ -139,34 +131,30 @@ const { convertBodyToStringBlock } = require('../lib/parseBody');
 let router = express.Router();
 &nbsp;
 router.get('/healthcheck', function(req, res, next) {
-  res.status(200).send("Healthy");
+  res.status(200).send('Healthy');
 });
 &nbsp;
-/* GET home page. */
 router.get('/csvParameter', function(req, res, next) {
+    if (typeof(req.query.csv) != 'string' ) {
+      res.status(400).send('Invalid data type, please provide string in query paramters');
+    } else {
     const csv = req.query.csv
     res.status(200).send(convertCsv(csv));
+    }
 });
 &nbsp;
-const parseRawBody = (req, res, next) =&gt; {
-    req.setEncoding('utf8');
-    req.rawBody = '';
-    req.on('data', (chunk) =&gt; {
-      req.rawBody += chunk;
-    });
-    req.on('end', () =&gt; {
-      next();
-    });
-  }
-&nbsp;
-router.use(parseRawBody);
-&nbsp;
+const bodyParser = require('body-parser')
+router.use(bodyParser.text())
 router.post('/parseCsvBody', (req, res) =&gt; {
-    (async () =&gt; {
-      let returnBlock = await convertBodyToStringBlock(req.rawBody);
-      res.send(returnBlock);
-    })();    
-});
+  if (typeof(req.body) != 'string') {
+    res.status(400).send('Invalid data type. Body must contain text input')
+  } else {
+  (async () =&gt; {
+    let returnBlock = await convertBodyToStringBlock(req.body);
+    res.send(returnBlock);
+  })();
+}
+})
 &nbsp;
 module.exports = router;</pre></td></tr></table></pre>
 
@@ -175,7 +163,7 @@ module.exports = router;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Apr 10 2022 08:24:47 GMT-0600 (Mountain Daylight Time)
+                at Sun Apr 10 2022 13:58:37 GMT-0600 (Mountain Daylight Time)
             </div>
         <script src="../prettify.js"></script>
         <script>
