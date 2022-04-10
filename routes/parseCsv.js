@@ -1,7 +1,11 @@
-var express = require('express');
+let express = require('express');
 const { convertCsv } = require('../lib/convertCsv');
 const { convertBodyToStringBlock } = require('../lib/parseBody');
-var router = express.Router();
+let router = express.Router();
+
+router.get('/healthcheck', function(req, res, next) {
+  res.status(200).send("Healthy");
+});
 
 /* GET home page. */
 router.get('/csvParameter', function(req, res, next) {
@@ -27,10 +31,6 @@ router.post('/parseCsvBody', (req, res) => {
       let returnBlock = await convertBodyToStringBlock(req.rawBody);
       res.send(returnBlock);
     })();    
-});
-
-router.get('/healthcheck', function(req, res, next) {
-    res.status(200).send("Healthy");
 });
 
 module.exports = router;
