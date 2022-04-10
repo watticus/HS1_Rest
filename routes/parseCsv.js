@@ -5,9 +5,6 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/csvParameter', function(req, res, next) {
-    if (typeof(req.query.csv) != String) {
-      res.status(400).send("Invalid data type, please provide string in query parameters.")
-    }
     const csv = req.query.csv
     res.status(200).send(convertCsv(csv));
 });
