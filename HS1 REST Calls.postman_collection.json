@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "5df215ee-3d07-4a87-938a-d7041fb0c2bb",
+		"name": "HS1 REST Calls",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Healthcheck",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Patient Name\",\"SSN\",\"Age\",\"Phone Number\",\"Status\"\r\n\"Prescott, Zeke\",\"542-51-6641\",21,\"801-555-2134\",\"Opratory=2,PCP=1\"\r\n\"Goldstein, Bucky\",\"635-45-1254\",42,\"435-555-1541\",\"Opratory=1,PCP=1\"\r\n\"Vox, Bono\",\"414-45-1475\",51,\"801-555-2100\",\"Opratory=3,PCP=2\"",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/csv/healthcheck",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"csv",
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "csvQuery",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/csv/csvParameter?csv=%22Prescott,%20Zeke%22,%22542-51-6641%22,21,%22801-555-2134%22,%22Opratory=2,PCP=1%22",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"csv",
+						"csvParameter"
+					],
+					"query": [
+						{
+							"key": "csv",
+							"value": "%22Prescott,%20Zeke%22,%22542-51-6641%22,21,%22801-555-2134%22,%22Opratory=2,PCP=1%22"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostData",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Patient Name\",\"SSN\",\"Age\",\"Phone Number\",\"Status\"\r\n\"Prescott, Zeke Obadiah\",\"542-51-6641\",21,\"801-555-2134\",\"Opratory=2,PCP=1\"\r\n\"Goldstein, Bucky\",\"635-45-1254\",42,\"435-555-1541\",\"Opratory=1,PCP=1\"\r\n\"Vox, Bono\",\"414-45-1475\",51,\"801-555-2100\",\"Opratory=3,PCP=2\"",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/csv/parseCsvBody",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"csv",
+						"parseCsvBody"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
